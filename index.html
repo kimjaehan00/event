@@ -251,7 +251,7 @@ h1{
 
 <!-- ✅ 맨 처음 뜨는 랜딩 페이지 -->
 <div class="landing-overlay" id="landing">
-  <div class="landing-title">돼지의 생일</div>
+  <div class="landing-title">내 도야지의 생일</div>
   <div class="landing-sub">버튼을 잡아야 들어갈 수 있음</div>
   <button class="landing-button" id="openBtn">못잡겠쥐~~</button>
 </div>
@@ -264,14 +264,14 @@ h1{
   <div class="date" id="anniversaryDate"></div>
 
   <div class="message">
-    <p>벌써 거의 1주년이네,</p>
-    <p>웃는 날도 많고 우는 날도 많았던 거 같은데</p>
+    <p>벌써 거의 1주년이네,우리 기념일이 다 초반에 모여있다 ㅎㅎ</p>
+    <p>나 땜에 웃는 날도 많고 우는 날도 많았던 거 같은데(그래도 웃는 날이 더 많았겠지..?^^)</p>
     <p>앞으로는 더 잘해볼게</p>
-    <p>생일 축하해</p>
+    <p>생일 미리 축하해. 이제 만으로 24살이니까 좀 성숙해지자~^^</p>
   </div>
 
   <div class="love-counter">
-    <div>우리가 함께한 시간</div>
+    <div>우리가 사귄지</div>
     <div class="counter-value" id="daysCounter">0</div>
     <div>일째</div>
   </div>
@@ -375,7 +375,7 @@ landing.addEventListener('mousemove', e => {
   const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
 
   // 일정 거리 안으로 오면 버튼 위치 이동
-  if (distance < 120) {
+  if (distance < 100) {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const padding = 40; // 화면 끝에 너무 붙지 않게 여유
