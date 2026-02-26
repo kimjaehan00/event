@@ -27,6 +27,7 @@ body{
   100%{ background-position:0% 50%; }
 }
 
+/* ✅ 메인 컨텐츠 (처음엔 숨김) */
 .container{
   background: rgba(255,255,255,0.95);
   border-radius: 30px;
@@ -37,6 +38,18 @@ body{
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   position: relative;
   z-index: 1;
+
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity .5s ease, transform .5s ease;
+}
+
+/* 열기 버튼 눌러서 진입했을 때만 보여주기 */
+.container.visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 h1{
@@ -76,7 +89,7 @@ h1{
   margin:10px 0;
 }
 
-/* ✅ 슬라이더 */
+/* ✅ 사진 슬라이더 */
 .slider{
   position: relative;
   width:100%;
@@ -143,6 +156,7 @@ h1{
   cursor:pointer;
   border-radius:18px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow:0 15px 30px rgba(0,0,0,0.25);
 }
 
 .flap{
@@ -168,6 +182,9 @@ h1{
   visibility:hidden;
   transform:translateY(40px);
   transition: all .5s ease;
+  font-size: 0.95em;
+  line-height: 1.7;
+  text-align:left;
 }
 
 .envelope.open .flap{
@@ -185,56 +202,104 @@ h1{
   font-size:0.9em;
   color:#666;
 }
+
+/* ✅ 랜딩 오버레이 */
+.landing-overlay{
+  position:fixed;
+  inset:0;
+  background:#000;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index: 999;
+}
+
+.landing-title{
+  font-size:2rem;
+  margin-bottom:30px;
+  letter-spacing:2px;
+}
+
+.landing-sub{
+  font-size:0.95rem;
+  opacity:0.7;
+  margin-bottom:40px;
+}
+
+/* 도망가는 버튼 */
+.landing-button{
+  position:absolute;
+  padding:14px 30px;
+  border-radius:999px;
+  border:none;
+  background:#fff;
+  color:#000;
+  font-size:1rem;
+  cursor:pointer;
+  transition: transform .15s ease;
+}
+
+.landing-button:hover{
+  transform: scale(1.05);
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>❤️ 수빈이 탄생일 ❤️</h1>
-
-<div class="date" id="anniversaryDate"></div>
-
-<div class="message">
-  <p>벌써 거의 1주년이네,</p>
-  <p>웃는 날도 많고 우는 날도 많았던 거 같은데</p>
-  <p>앞으로는 더 잘해볼게</p>
-  <p>생일 축하해</p>
+<!-- ✅ 맨 처음 뜨는 랜딩 페이지 -->
+<div class="landing-overlay" id="landing">
+  <div class="landing-title">돼지의 생일</div>
+  <div class="landing-sub">버튼을 잡아야 들어갈 수 있음</div>
+  <button class="landing-button" id="openBtn">열기</button>
 </div>
 
-<div class="love-counter">
-  <div>우리가 함께한 시간</div>
-  <div class="counter-value" id="daysCounter">0</div>
-  <div>일째</div>
-</div>
+<!-- ✅ 실제 생일 페이지 내용 -->
+<div class="container" id="mainContainer">
 
-<!-- ✅ 사진 슬라이더 -->
-<div class="slider" id="slider">
-  <div class="slides" id="slides">
-    <div class="slide"><img src="KakaoTalk_20260212_113103958_01.jpg"></div>
-    <div class="slide"><img src="KakaoTalk_20260212_113103958_02.jpg"></div>
-    <div class="slide"><img src="KakaoTalk_20260212_113103958_03.jpg"></div>
-    <div class="slide"><img src="KakaoTalk_20260212_113103958_04.jpg"></div>
+  <h1>❤️ 수빈이 탄생일 ❤️</h1>
+
+  <div class="date" id="anniversaryDate"></div>
+
+  <div class="message">
+    <p>벌써 거의 1주년이네,</p>
+    <p>웃는 날도 많고 우는 날도 많았던 거 같은데</p>
+    <p>앞으로는 더 잘해볼게</p>
+    <p>생일 축하해</p>
   </div>
 
-  <button class="nav-btn prev" onclick="prevSlide()">‹</button>
-  <button class="nav-btn next" onclick="nextSlide()">›</button>
-</div>
+  <div class="love-counter">
+    <div>우리가 함께한 시간</div>
+    <div class="counter-value" id="daysCounter">0</div>
+    <div>일째</div>
+  </div>
 
-<!-- 봉투 -->
-<div class="letter-wrap">
-  <div class="envelope" id="envelope" onclick="toggleLetter()">
-    <div class="flap"></div>
-    <div class="letter">
-      수빈이 돼지<br><br>
-      맛있는거도 많이 먹고 운동도 많이하자~^^
+  <!-- 사진 슬라이더 -->
+  <div class="slider" id="slider">
+    <div class="slides" id="slides">
+      <div class="slide"><img src="KakaoTalk_20260212_113103958_01.jpg" alt=""></div>
+      <div class="slide"><img src="KakaoTalk_20260212_113103958_02.jpg" alt=""></div>
+      <div class="slide"><img src="KakaoTalk_20260212_113103958_03.jpg" alt=""></div>
+      <div class="slide"><img src="KakaoTalk_20260212_113103958_04.jpg" alt=""></div>
+    </div>
+    <button class="nav-btn prev" onclick="prevSlide()">‹</button>
+    <button class="nav-btn next" onclick="nextSlide()">›</button>
+  </div>
+
+  <!-- 봉투 편지 -->
+  <div class="letter-wrap">
+    <div class="envelope" id="envelope" onclick="toggleLetter()">
+      <div class="flap"></div>
+      <div class="letter">
+        수빈이 생일 축하해<br><br>
+        앞으로도 잘 만나보자
+      </div>
     </div>
   </div>
-</div>
 
-<div class="footer">Forever Yours</div>
-
+  <div class="footer">Forever Yours</div>
 </div>
 
 <script>
@@ -254,12 +319,10 @@ const totalSlides = slides.children.length;
 function updateSlide(){
   slides.style.transform = `translateX(-${currentIndex * 100}%)`;
 }
-
 function nextSlide(){
   currentIndex = (currentIndex + 1) % totalSlides;
   updateSlide();
 }
-
 function prevSlide(){
   currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
   updateSlide();
@@ -267,11 +330,12 @@ function prevSlide(){
 
 /* 터치 스와이프 */
 let startX = 0;
-document.getElementById('slider').addEventListener('touchstart', e=>{
+const sliderEl = document.getElementById('slider');
+sliderEl.addEventListener('touchstart', e=>{
   startX = e.touches[0].clientX;
 });
-document.getElementById('slider').addEventListener('touchend', e=>{
-  let endX = e.changedTouches[0].clientX;
+sliderEl.addEventListener('touchend', e=>{
+  const endX = e.changedTouches[0].clientX;
   if(startX - endX > 50) nextSlide();
   if(endX - startX > 50) prevSlide();
 });
@@ -280,6 +344,55 @@ document.getElementById('slider').addEventListener('touchend', e=>{
 function toggleLetter(){
   document.getElementById('envelope').classList.toggle('open');
 }
+
+/* ✅ 랜딩: 도망가는 버튼 + 열기 */
+const landing = document.getElementById('landing');
+const openBtn = document.getElementById('openBtn');
+const mainContainer = document.getElementById('mainContainer');
+
+// 버튼 초기 위치(가운데 근처)
+function setInitialButtonPosition(){
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const btnRect = openBtn.getBoundingClientRect();
+  const x = vw / 2 - btnRect.width / 2;
+  const y = vh / 2 - btnRect.height / 2 + 80; // 제목 아래쪽
+  openBtn.style.left = x + 'px';
+  openBtn.style.top  = y + 'px';
+}
+
+setInitialButtonPosition();
+window.addEventListener('resize', setInitialButtonPosition);
+
+// 마우스가 버튼 근처로 오면 도망가기
+landing.addEventListener('mousemove', e => {
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+  const rect = openBtn.getBoundingClientRect();
+  const btnX = rect.left + rect.width / 2;
+  const btnY = rect.top + rect.height / 2;
+
+  const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
+
+  // 일정 거리 안으로 오면 버튼 위치 이동
+  if (distance < 120) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const padding = 40; // 화면 끝에 너무 붙지 않게 여유
+
+    let newX = Math.random() * (vw - rect.width - padding * 2) + padding;
+    let newY = Math.random() * (vh - rect.height - padding * 2) + padding;
+
+    openBtn.style.left = newX + 'px';
+    openBtn.style.top  = newY + 'px';
+  }
+});
+
+// 열기 버튼 클릭 → 랜딩 제거 + 메인 페이지 보이기
+openBtn.addEventListener('click', () => {
+  landing.style.display = 'none';
+  mainContainer.classList.add('visible');
+});
 </script>
 
 </body>
