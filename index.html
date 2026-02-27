@@ -18,10 +18,8 @@ body{
   overflow-x: hidden;
   position: relative;
 
-  /* 기본 종이색 */
   background-color: #fdf4ea;
 
-  /* 코너 쪽 은은한 밝은 영역 + 얇은 노이즈 패턴 */
   background-image:
     radial-gradient(circle at 0 0, rgba(255,255,255,0.7) 0, transparent 55%),
     radial-gradient(circle at 100% 0, rgba(255,255,255,0.5) 0, transparent 55%),
@@ -42,10 +40,10 @@ body{
     4px 4px;
 
   background-attachment: fixed;
-  animation: paperMove 60s linear infinite;
+  animation: paperMove 30s linear infinite;
 }
 
-/* 배경이 아주 살짝만 움직이는 애니메이션 */
+/* 배경이 살짝 움직이는 애니메이션 (조금 더 눈에 띄게 수정) */
 @keyframes paperMove{
   0% {
     background-position:
@@ -55,14 +53,53 @@ body{
       100% 100%,
       0 0;
   }
-  100% {
+  50% {
     background-position:
-      -40px 20px,
-      calc(100% + 40px) 0,
-      -30px calc(100% + 30px),
-      calc(100% + 30px) 100%,
+      -80px 40px,
+      calc(100% + 80px) 20px,
+      -60px calc(100% + 60px),
+      calc(100% + 60px) calc(100% + 20px),
       40px 40px;
   }
+  100% {
+    background-position:
+      0 0,
+      100% 0,
+      0 100%,
+      100% 100%,
+      0 0;
+  }
+}
+
+/* ✅ 떠다니는 옅은 빛 (약한 애니메이션) */
+.bg-spots{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow:hidden;
+}
+
+.spot{
+  position:absolute;
+  width: 260px;
+  height: 260px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
+  filter: blur(2px);
+  opacity: 0.45;
+  animation: floatSpot 28s ease-in-out infinite;
+}
+
+/* 각각 위치/속도만 다르게 */
+.spot.s1{ top: -80px; left: -40px; animation-duration: 32s; }
+.spot.s2{ top: 20vh; right: -60px; animation-duration: 26s; animation-delay: 4s; }
+.spot.s3{ bottom: -90px; left: 10vw; animation-duration: 30s; animation-delay: 8s; }
+
+@keyframes floatSpot{
+  0%   { transform: translate3d(0,0,0); opacity: 0.35; }
+  50%  { transform: translate3d(40px,-40px,0); opacity: 0.6; }
+  100% { transform: translate3d(0,0,0); opacity: 0.35; }
 }
 
 /* ✅ 메인 컨텐츠 (처음엔 숨김) */
@@ -283,6 +320,13 @@ h1{
 
 <body>
 
+<!-- ✅ 배경용 옅은 빛 동그라미 -->
+<div class="bg-spots">
+  <div class="spot s1"></div>
+  <div class="spot s2"></div>
+  <div class="spot s3"></div>
+</div>
+
 <!-- ✅ 맨 처음 뜨는 랜딩 페이지 -->
 <div class="landing-overlay" id="landing">
   <div class="landing-title">내 도야지의 생일</div>
@@ -409,11 +453,10 @@ landing.addEventListener('mousemove', e => {
 
   const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
 
-  // 일정 거리 안으로 오면 버튼 위치 이동
   if (distance < 100) {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    const padding = 40; // 화면 끝에 너무 붙지 않게 여유
+    const padding = 40;
 
     let newX = Math.random() * (vw - rect.width - padding * 2) + padding;
     let newY = Math.random() * (vh - rect.height - padding * 2) + padding;
