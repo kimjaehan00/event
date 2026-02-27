@@ -376,7 +376,7 @@ landing.addEventListener('mousemove', e => {
   const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
 
   // 일정 거리 안으로 오면 버튼 위치 이동
-  if (distance < 60) {
+  if (distance < 100) {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const padding = 40; // 화면 끝에 너무 붙지 않게 여유
